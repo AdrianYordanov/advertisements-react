@@ -1,0 +1,14 @@
+.error {
+  width: 99%;
+  height: 20%;
+  display: inline-block;
+  border-radius: 4px;
+  margin: 2px 2px 2px 2px;
+  background-color: #343a40;
+  font-family: HelveticaNeue;
+  font-size: 15px;
+  text-align: center;
+  letter-spacing: normal;
+  color: #ffffff;
+  opacity: 0.5;
+}
