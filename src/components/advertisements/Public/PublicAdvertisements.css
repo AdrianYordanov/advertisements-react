@@ -1,0 +1,12 @@
+h1.advHeading {
+  margin: 40px;
+}
+
+div.advPanel {
+  width: 90%;
+  margin: 5%;
+}
+
+div.publicAdv {
+  padding-left: 0;
+}

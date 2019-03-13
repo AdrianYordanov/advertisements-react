@@ -1,9 +1,7 @@
-// External
 import axios from "axios";
 
-// Utilities
-import { IUser } from "../utils/Contracts";
-import { getAuthorizationHeaders } from "../utils/Cookies";
+import { IUser } from "../utils/contracts";
+import { getAuthorizationHeaders } from "../utils/cookies";
 
 export const loginRequest = (user: IUser) => {
   return axios.post("users/login", user);

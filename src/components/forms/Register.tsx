@@ -1,16 +1,15 @@
 import * as React from "react";
 
-// Components
+import { connect } from "react-redux";
+
+import { registerUser } from "../../actions/userActions";
+import { ITextFieldConfiguration, IUser } from "../../utils/contracts";
 import TextField from "../fields/TextValidator";
 
-// Contracts
-import { ITextFieldConfiguration, IUser } from "../../utils/Contracts";
-
-// CSS
 import "./CommonForm.css";
 
 export interface IProps {
-  registerUser: (inputUser: IUser) => void;
+  registerUser: (user: IUser) => void;
 }
 
 export interface IState {
@@ -23,6 +22,12 @@ class Register extends React.Component<IProps, IState> {
   constructor(props: IProps) {
     super(props);
     this.state = {
+      usernameConfig: {
+        fieldType: "username",
+        message: "'s length must be at least 5 characters - at least 1 letter.",
+        pattern: /^(?=.*[a-zA-Z])(?=.{5,})/,
+        value: ""
+      },
       confirmPasswordConfig: {
         fieldType: "confirm password",
         message: " must to equal to the password above.",
@@ -33,12 +38,6 @@ class Register extends React.Component<IProps, IState> {
         fieldType: "password",
         message: "'s length must be at least 8 characters - letters and digits",
         pattern: /^(?=.*[a-zA-Z])(?=.*[0-9])(?=.{8,})/,
-        value: ""
-      },
-      usernameConfig: {
-        fieldType: "username",
-        message: "'s length must be at least 5 characters - at least 1 letter.",
-        pattern: /^(?=.*[a-zA-Z])(?=.{5,})/,
         value: ""
       }
     };
@@ -86,7 +85,7 @@ class Register extends React.Component<IProps, IState> {
     );
   }
 
-  // Handlers
+  // Fields Handlers
   private usernameHandler = (newValue: string) => {
     const temp = { ...this.state.usernameConfig };
     temp.value = newValue;
@@ -104,7 +103,7 @@ class Register extends React.Component<IProps, IState> {
   };
   private submitHandler = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    const inputUser = {
+    const inputUser: IUser = {
       password: this.state.passwordConfig.value,
       username: this.state.usernameConfig.value
     };
@@ -112,6 +111,17 @@ class Register extends React.Component<IProps, IState> {
   };
 
   // Validation
+  private validateField = (
+    inputÇonfiguration: ITextFieldConfiguration,
+    newInputValue: string
+  ) => {
+    const { pattern } = inputÇonfiguration;
+    const passwordValue = this.state.passwordConfig.value;
+    // If field has no pattern, the input field is for confirmation.
+    return pattern
+      ? pattern.test(newInputValue)
+      : newInputValue === passwordValue;
+  };
   private AllFieldsAreValid = () => {
     const {
       usernameConfig,
@@ -124,17 +134,14 @@ class Register extends React.Component<IProps, IState> {
       this.validateField(confirmPasswordConfig, confirmPasswordConfig.value)
     );
   };
-  private validateField = (
-    inputÇonfiguration: ITextFieldConfiguration,
-    newInputValue: string
-  ) => {
-    const { pattern } = inputÇonfiguration;
-    const passwordValue = this.state.passwordConfig.value;
-    // If field has no pattern, the input field is for confirmation.
-    return pattern
-      ? pattern.test(newInputValue)
-      : newInputValue === passwordValue;
-  };
 }
 
-export default Register;
+// Mapping
+const mapActionsToProps = {
+  registerUser
+};
+
+export default connect(
+  undefined,
+  mapActionsToProps
+)(Register);

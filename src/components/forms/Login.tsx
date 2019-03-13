@@ -1,16 +1,15 @@
 import * as React from "react";
 
-// Components
+import { connect } from "react-redux";
+
+import { loginUser } from "../../actions/userActions";
+import { ITextFieldConfiguration, IUser } from "../../utils/contracts";
 import TextField from "../fields/TextValidator";
 
-// Contracts
-import { ITextFieldConfiguration, IUser } from "../../utils/Contracts";
-
-// CSS
 import "./CommonForm.css";
 
 export interface IProps {
-  loginUser: (inputUser: IUser) => void;
+  loginUser: (user: IUser) => void;
 }
 
 export interface IState {
@@ -19,19 +18,19 @@ export interface IState {
 }
 
 class Login extends React.Component<IProps, IState> {
-  constructor(props: any) {
+  constructor(props: IProps) {
     super(props);
     this.state = {
-      passwordConfig: {
-        fieldType: "password",
-        message: "'s length must be at least 8 characters - letters and digits",
-        pattern: /^(?=.*[a-zA-Z])(?=.*[0-9])(?=.{8,})/,
-        value: ""
-      },
       usernameConfig: {
         fieldType: "username",
         message: "'s length must be at least 5 characters - at least 1 letter.",
         pattern: /^(?=.*[a-zA-Z])(?=.{5,})/,
+        value: ""
+      },
+      passwordConfig: {
+        fieldType: "password",
+        message: "'s length must be at least 8 characters - letters and digits",
+        pattern: /^(?=.*[a-zA-Z])(?=.*[0-9])(?=.{8,})/,
         value: ""
       }
     };
@@ -70,7 +69,7 @@ class Login extends React.Component<IProps, IState> {
     );
   }
 
-  // Handlers
+  // Fields Handlers
   private usernameHandler = (newValue: string) => {
     const temp = { ...this.state.usernameConfig };
     temp.value = newValue;
@@ -83,7 +82,7 @@ class Login extends React.Component<IProps, IState> {
   };
   private submitHandler = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    const inputUser = {
+    const inputUser: IUser = {
       password: this.state.passwordConfig.value,
       username: this.state.usernameConfig.value
     };
@@ -91,13 +90,6 @@ class Login extends React.Component<IProps, IState> {
   };
 
   // Validation
-  private AllFieldsAreValid = () => {
-    const { usernameConfig, passwordConfig } = this.state;
-    return (
-      this.validateField(usernameConfig, usernameConfig.value) &&
-      this.validateField(passwordConfig, passwordConfig.value)
-    );
-  };
   private validateField = (
     configuration: ITextFieldConfiguration,
     newInputValue: string
@@ -105,6 +97,21 @@ class Login extends React.Component<IProps, IState> {
     const { pattern } = configuration;
     return pattern ? pattern.test(newInputValue) : false;
   };
+  private AllFieldsAreValid = () => {
+    const { usernameConfig, passwordConfig } = this.state;
+    return (
+      this.validateField(usernameConfig, usernameConfig.value) &&
+      this.validateField(passwordConfig, passwordConfig.value)
+    );
+  };
 }
 
-export default Login;
+// Mapping
+const mapActionsToProps = {
+  loginUser
+};
+
+export default connect(
+  undefined,
+  mapActionsToProps
+)(Login);

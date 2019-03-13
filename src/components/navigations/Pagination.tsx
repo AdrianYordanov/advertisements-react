@@ -1,7 +1,8 @@
 import * as React from "react";
 
-// Classnames
 import classNames from "classnames";
+
+import "./Pagination.css";
 
 export interface IProps {
   currentPageId: number;
@@ -62,7 +63,6 @@ class Pagination extends React.Component<IProps, IState> {
           {container.map((pageId, positionId) => {
             return (
               <li
-                style={{ width: "40px" }}
                 className={classNames("page-item", {
                   active: positionId === currentNavigationPosition
                 })}
@@ -71,7 +71,6 @@ class Pagination extends React.Component<IProps, IState> {
                 <a
                   href="#"
                   key={positionId}
-                  style={{ position: "initial" }}
                   className="page-link"
                   onClick={this.raisePageChange(positionId, pageId)}
                 >

@@ -1,0 +1,9 @@
+table.userAdvertisementsPanel {
+  border-collapse: separate;
+  border-spacing: 0 1em;
+  width: 95%;
+}
+
+h1.userAdvertisementsHeading {
+  margin: 40px;
+}

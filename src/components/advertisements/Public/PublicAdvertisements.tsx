@@ -1,11 +1,13 @@
 import * as React from "react";
 
-// Utilities
-import { IAdvertisement } from "../../../utils/Contracts";
+import { connect } from "react-redux";
 
-// Components
-import Pagination from "../../Pagination";
+import { fetchPublicAdvertisements } from "../../../actions/advertisementsActions";
+import { IAdvertisement, IReduxState } from "../../../utils/contracts";
+import Pagination from "../../navigations/Pagination";
 import PublicAdvertisement from "./PublicAdvertisement";
+
+import "./PublicAdvertisements.css";
 
 export interface IState {
   currentPage: number;
@@ -20,7 +22,7 @@ export interface IProps {
 }
 
 class PublicAdvertisements extends React.Component<IProps, IState> {
-  constructor(props: any) {
+  constructor(props: IProps) {
     super(props);
     this.state = {
       currentPage: 1,
@@ -39,10 +41,8 @@ class PublicAdvertisements extends React.Component<IProps, IState> {
     const reducedData = this.reduceData();
     return (
       <React.Fragment>
-        <h1 style={{ margin: "40px" }}>
-          Here are {data.length} avaiable advertisements.
-        </h1>
-        <div style={{ width: "90%" }} className="row">
+        <h1 className="advHeading">{data.length} avaiable advertisements.</h1>
+        <div className="row advPanel">
           <div className="col-sm-10">
             <div className="row">
               {reducedData.map((advertisement: IAdvertisement) => (
@@ -53,8 +53,8 @@ class PublicAdvertisements extends React.Component<IProps, IState> {
               ))}
             </div>
           </div>
+          {this.showPagination(reducedData.length)}
         </div>
-        {this.showPagination(reducedData.length)}
       </React.Fragment>
     );
   }
@@ -101,4 +101,15 @@ class PublicAdvertisements extends React.Component<IProps, IState> {
   };
 }
 
-export default PublicAdvertisements;
+// Mapping
+const mapStateToProps = (state: IReduxState) => {
+  return { data: state.advertisements.publicAdvertisements };
+};
+const mapActionsToProps = {
+  getAdvertisements: fetchPublicAdvertisements
+};
+
+export default connect(
+  mapStateToProps,
+  mapActionsToProps
+)(PublicAdvertisements);

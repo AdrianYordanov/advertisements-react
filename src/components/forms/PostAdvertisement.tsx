@@ -1,13 +1,12 @@
 import * as React from "react";
 
-// Components
+import { connect } from "react-redux";
+
+import { postAdvertisement } from "../../actions/advertisementsActions";
+import { ITextFieldConfiguration } from "../../utils/contracts";
 import TextAreaValidator from "../fields/TextAreaValidator";
 import TextField from "../fields/TextValidator";
 
-// Contracts
-import { ITextFieldConfiguration } from "../../utils/Contracts";
-
-// CSS
 import "./CommonForm.css";
 
 export interface IProps {
@@ -25,30 +24,30 @@ class PostAdvertisement extends React.Component<IProps, IState> {
   constructor(props: any) {
     super(props);
     this.state = {
-      descriptionConfig: {
-        fieldType: "description",
-        message: "'s length must be at least 10 characters.",
-        pattern: /.{10,}/,
+      titleConfig: {
+        fieldType: "title",
+        message: "'s length must be at least 5 characters.",
+        pattern: /.{5,}/,
         value: ""
       },
-      image: undefined,
       priceConfig: {
         fieldType: "price",
         message: " must be positive number.",
         pattern: /^(?=.+)(?:[1-9]\d*|0)?(?:\.\d+)?$/,
         value: ""
       },
-      titleConfig: {
-        fieldType: "title",
-        message: "'s length must be at least 5 characters.",
-        pattern: /.{5,}/,
+      descriptionConfig: {
+        fieldType: "description",
+        message: "'s length must be at least 10 characters.",
+        pattern: /.{10,}/,
         value: ""
-      }
+      },
+      image: undefined
     };
   }
 
   public render() {
-    const { titleConfig, descriptionConfig, priceConfig } = this.state;
+    const { titleConfig, priceConfig, descriptionConfig } = this.state;
     return (
       <div className="container login-container">
         <div className="row">
@@ -138,12 +137,20 @@ class PostAdvertisement extends React.Component<IProps, IState> {
     );
   };
   private validateField = (
-    inputConfiguration: ITextFieldConfiguration,
+    configuration: ITextFieldConfiguration,
     newInputValue: string
   ) => {
-    const { pattern } = inputConfiguration;
+    const { pattern } = configuration;
     return pattern ? pattern.test(newInputValue) : false;
   };
 }
 
-export default PostAdvertisement;
+// Mapping
+const mapActionsToProps = {
+  postAdvertisement
+};
+
+export default connect(
+  undefined,
+  mapActionsToProps
+)(PostAdvertisement);

@@ -1,6 +1,5 @@
 import * as React from "react";
 
-// CSS
 import "./CommonForm.css";
 
 class Contacts extends React.Component {
@@ -12,7 +11,7 @@ class Contacts extends React.Component {
             <div className="row">
               <div className="col-sm-12 col-lg-12">
                 <h1 className="h1">
-                  Feel free to contact us.{" "}
+                  {"Feel free to contact us. "}
                   <small>You will get feedback very soon.</small>
                 </h1>
               </div>

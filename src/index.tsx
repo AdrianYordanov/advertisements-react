@@ -10,8 +10,20 @@ import "bootstrap/dist/js/bootstrap.bundle";
 // Toastify
 import "react-toastify/dist/ReactToastify.css";
 
-// body CSS
+// Redux
+import { Provider } from "react-redux";
+
+// Store
+import store from "./store";
+
+// CSS
 import "./index.css";
 
-ReactDOM.render(<App />, document.getElementById("root") as HTMLElement);
+ReactDOM.render(
+  <Provider store={store}>
+    <App />
+  </Provider>,
+  document.getElementById("root")
+);
+
 registerServiceWorker();

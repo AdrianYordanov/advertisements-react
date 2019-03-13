@@ -1,7 +1,11 @@
 import * as React from "react";
 
-// Utilities
-import { IAdvertisement } from "../../../utils/Contracts";
+import { connect } from "react-redux";
+
+import { deleteAdvertisement } from "../../../actions/advertisementsActions";
+import { IAdvertisement } from "../../../utils/contracts";
+
+import "./UserAdvertisement.css";
 
 export interface IProps {
   advertisement: IAdvertisement;
@@ -15,15 +19,7 @@ class UserAdvertisement extends React.Component<IProps, any> {
       <tr>
         <td className="col-md-6">
           <div className="media">
-            <img
-              className="media-object"
-              src={advertisement.image}
-              style={{
-                height: "300px",
-                marginRight: "30px",
-                width: "300px"
-              }}
-            />
+            <img className="media-object" src={advertisement.image} />
             <div className="media-body">
               <h4 className="media-heading">
                 <a href="#">{advertisement.title}</a>
@@ -33,7 +29,7 @@ class UserAdvertisement extends React.Component<IProps, any> {
           </div>
         </td>
         <td className="col-md-1 text-center">
-          <strong>Price: {advertisement.price}$</strong>
+          <strong>Price: {advertisement.price.toFixed(2)}$</strong>
         </td>
         <td className="col-md-1">
           <button
@@ -49,9 +45,16 @@ class UserAdvertisement extends React.Component<IProps, any> {
   }
 
   private onDelete = () => {
-    const { advertisement, deleteAdvertisement } = this.props;
-    deleteAdvertisement(advertisement._id);
+    this.props.deleteAdvertisement(this.props.advertisement._id);
   };
 }
 
-export default UserAdvertisement;
+// Mapping
+const mapActionsToProps = {
+  deleteAdvertisement
+};
+
+export default connect(
+  undefined,
+  mapActionsToProps
+)(UserAdvertisement);

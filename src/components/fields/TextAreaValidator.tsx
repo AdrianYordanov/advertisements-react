@@ -1,9 +1,7 @@
 import * as React from "react";
 
-// Contracts
-import { ITextFieldConfiguration } from "../../utils/Contracts";
+import { ITextFieldConfiguration } from "../../utils/contracts";
 
-// CSS
 import "./TextField.css";
 
 export interface IProps {

@@ -1,15 +1,16 @@
 import * as React from "react";
 
-// Components
+import { connect } from "react-redux";
+
+import { fetchUserAdvertisements } from "../../../actions/advertisementsActions";
+import { IAdvertisement, IReduxState } from "../../../utils/contracts";
 import UserAdvertisement from "./UserAdvertisement";
 
-// Contracts
-import { IAdvertisement } from "src/utils/Contracts";
+import "./UserAdvertisements.css";
 
 export interface IProps {
   data: IAdvertisement[];
   getAdvertisements: () => void;
-  deleteAdvertisement: (advertisementId: string) => void;
 }
 
 class UserAdvertisements extends React.Component<IProps, any> {
@@ -18,26 +19,19 @@ class UserAdvertisements extends React.Component<IProps, any> {
   };
 
   public render() {
-    const { data, deleteAdvertisement } = this.props;
+    const { data } = this.props;
     return (
       <React.Fragment>
-        <h1 style={{ margin: "40px" }}>
+        <h1 className="userAdvertisementsHeading">
           You have {data.length} advertisements.
         </h1>
-        <table
-          style={{
-            borderCollapse: "separate",
-            borderSpacing: "0 1em",
-            width: "95%"
-          }}
-        >
+        <table className="userAdvertisementsPanel">
           <tbody>
             {data.map((advertisement: IAdvertisement) => {
               return (
                 <UserAdvertisement
                   key={advertisement._id}
                   advertisement={advertisement}
-                  deleteAdvertisement={deleteAdvertisement}
                 />
               );
             })}
@@ -48,4 +42,15 @@ class UserAdvertisements extends React.Component<IProps, any> {
   }
 }
 
-export default UserAdvertisements;
+// Mapping
+const mapStateToProps = (state: IReduxState) => {
+  return { data: state.advertisements.userAdvertisements };
+};
+const mapActionsToProps = {
+  getAdvertisements: fetchUserAdvertisements
+};
+
+export default connect(
+  mapStateToProps,
+  mapActionsToProps
+)(UserAdvertisements);
