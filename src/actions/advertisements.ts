@@ -1,7 +1,10 @@
-import * as Api from "../api/advertisementsApi";
-import history from "../utils/browserHistory";
-import { IAdvertisement, IReduxAction } from "../utils/contracts";
-import httpResponseHandler from "../utils/httpResponseHandler";
+import * as Api from "../api/advertisements";
+import history from "../middleware/browserHistory";
+import httpResponseHandler from "../middleware/httpResponseHandler";
+import {
+  IAdvertisement,
+  IReduxAction
+} from "../typeScript/contracts/contracts";
 import * as Types from "./types/advertisementsTypes";
 
 export const fetchPublicAdvertisements = () => (
@@ -17,7 +20,7 @@ export const fetchPublicAdvertisements = () => (
     })
     .catch(err => {
       const { status, data } = err.response;
-      httpResponseHandler(status, data.message, dispatch, false);
+      httpResponseHandler(status, data.message, dispatch);
     });
 };
 
@@ -61,7 +64,6 @@ export const deleteAdvertisement = (id: string) => (
 ) => {
   Api.deleteAdvertisementRequest(id)
     .then(res => {
-      console.log(res);
       httpResponseHandler(res.status, res.data.message, dispatch);
       fetchUserAdvertisements()(dispatch);
     })

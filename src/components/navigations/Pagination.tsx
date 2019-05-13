@@ -42,7 +42,7 @@ class Pagination extends React.Component<IProps, IState> {
     const { currentPageId, totalPages } = this.props;
     const container = this.getNavigationContainer();
     return (
-      <nav aria-label="Page navigation example">
+      <nav aria-label="Page navigation example" className="pagination">
         <ul className="pagination">
           <li
             className={classNames("page-item", {

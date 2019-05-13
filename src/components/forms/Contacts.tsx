@@ -1,6 +1,6 @@
 import * as React from "react";
 
-import "./CommonForm.css";
+import "./Form.css";
 
 class Contacts extends React.Component {
   public render() {

@@ -2,12 +2,15 @@ import * as React from "react";
 
 import { connect } from "react-redux";
 
-import { fetchPublicAdvertisements } from "../../../actions/advertisementsActions";
-import { IAdvertisement, IReduxState } from "../../../utils/contracts";
+import { fetchPublicAdvertisements } from "../../../actions/advertisements";
+import {
+  IAdvertisement,
+  IReduxState
+} from "../../../typeScript/contracts/contracts";
 import Pagination from "../../navigations/Pagination";
-import PublicAdvertisement from "./PublicAdvertisement";
+import Advertisement from "./Advertisement";
 
-import "./PublicAdvertisements.css";
+import "./AdvertisementsContainer.css";
 
 export interface IState {
   currentPage: number;
@@ -18,10 +21,10 @@ export interface IState {
 
 export interface IProps {
   data: IAdvertisement[];
-  getAdvertisements: () => void;
+  fetchPublicAdvertisements: () => void;
 }
 
-class PublicAdvertisements extends React.Component<IProps, IState> {
+class AdvertisementsContainer extends React.Component<IProps, IState> {
   constructor(props: IProps) {
     super(props);
     this.state = {
@@ -33,7 +36,7 @@ class PublicAdvertisements extends React.Component<IProps, IState> {
   }
 
   public componentWillMount = () => {
-    this.props.getAdvertisements();
+    this.props.fetchPublicAdvertisements();
   };
 
   public render() {
@@ -41,43 +44,41 @@ class PublicAdvertisements extends React.Component<IProps, IState> {
     const reducedData = this.reduceData();
     return (
       <React.Fragment>
-        <h1 className="advHeading">{data.length} avaiable advertisements.</h1>
-        <div className="row advPanel">
+        <h1 id="adsCount">{data.length} avaiable advertisements.</h1>
+        <div id="adsPanel" className="col">
           <div className="col-sm-10">
             <div className="row">
               {reducedData.map((advertisement: IAdvertisement) => (
-                <PublicAdvertisement
+                <Advertisement
                   key={advertisement._id}
                   advertisement={advertisement}
                 />
               ))}
             </div>
           </div>
-          {this.showPagination(reducedData.length)}
+          {this.conditionalPagination(reducedData.length)}
         </div>
       </React.Fragment>
     );
   }
 
-  // Handlers
-  private changeCurrentPageHandler = (newPageId: number) => {
-    this.setState({ currentPage: newPageId });
-  };
-  private changeFirstPageHandler = (newFirstPageId: number) => {
-    this.setState({ firstPage: newFirstPageId });
-  };
-
   // Functionality
-  private showPagination = (dataLength: number) => {
+  private conditionalPagination = (dataLength: number) => {
     const { firstPage, currentPage, maxPaginationPages } = this.state;
     return dataLength > 0 ? (
       <Pagination
         currentPageId={currentPage}
         firstPageId={firstPage}
         maxPaginationPages={maxPaginationPages}
-        totalPages={this.calculateTotalPages}
-        onPageChange={this.changeCurrentPageHandler}
-        onFirstPageChange={this.changeFirstPageHandler}
+        totalPages={() =>
+          Math.ceil(this.props.data.length / this.state.maxDataPerPage)
+        }
+        onPageChange={(newPageId: number) =>
+          this.setState({ currentPage: newPageId })
+        }
+        onFirstPageChange={(newFirstPageId: number) =>
+          this.setState({ firstPage: newFirstPageId })
+        }
       />
     ) : (
       ""
@@ -96,9 +97,6 @@ class PublicAdvertisements extends React.Component<IProps, IState> {
 
     return [];
   };
-  private calculateTotalPages = () => {
-    return Math.ceil(this.props.data.length / this.state.maxDataPerPage);
-  };
 }
 
 // Mapping
@@ -106,10 +104,10 @@ const mapStateToProps = (state: IReduxState) => {
   return { data: state.advertisements.publicAdvertisements };
 };
 const mapActionsToProps = {
-  getAdvertisements: fetchPublicAdvertisements
+  fetchPublicAdvertisements
 };
 
 export default connect(
   mapStateToProps,
   mapActionsToProps
-)(PublicAdvertisements);
+)(AdvertisementsContainer);

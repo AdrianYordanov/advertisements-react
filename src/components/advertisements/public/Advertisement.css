@@ -1,0 +1,12 @@
+img.card-img-top {
+  width: 100%;
+  height: auto;
+}
+
+span.card-text {
+  white-space: pre-wrap;
+}
+
+div.publicAd {
+  padding-left: 0;
+}

@@ -3,7 +3,7 @@ import {
   IAdvertisement,
   IAdvertisementsState,
   IReduxAction
-} from "../utils/contracts";
+} from "../typeScript/contracts/contracts";
 
 const initialState: IAdvertisementsState = {
   publicAdvertisements: [],

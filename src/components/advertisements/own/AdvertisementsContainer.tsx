@@ -2,20 +2,23 @@ import * as React from "react";
 
 import { connect } from "react-redux";
 
-import { fetchUserAdvertisements } from "../../../actions/advertisementsActions";
-import { IAdvertisement, IReduxState } from "../../../utils/contracts";
-import UserAdvertisement from "./UserAdvertisement";
+import { fetchUserAdvertisements } from "../../../actions/advertisements";
+import {
+  IAdvertisement,
+  IReduxState
+} from "../../../typeScript/contracts/contracts";
+import Advertisement from "./Advertisement";
 
-import "./UserAdvertisements.css";
+import "./AdvertisementsContainer.css";
 
 export interface IProps {
   data: IAdvertisement[];
-  getAdvertisements: () => void;
+  fetchUserAdvertisements: () => void;
 }
 
-class UserAdvertisements extends React.Component<IProps, any> {
+class AdvertisementsContainer extends React.Component<IProps, any> {
   public componentWillMount = () => {
-    this.props.getAdvertisements();
+    this.props.fetchUserAdvertisements();
   };
 
   public render() {
@@ -29,7 +32,7 @@ class UserAdvertisements extends React.Component<IProps, any> {
           <tbody>
             {data.map((advertisement: IAdvertisement) => {
               return (
-                <UserAdvertisement
+                <Advertisement
                   key={advertisement._id}
                   advertisement={advertisement}
                 />
@@ -47,10 +50,10 @@ const mapStateToProps = (state: IReduxState) => {
   return { data: state.advertisements.userAdvertisements };
 };
 const mapActionsToProps = {
-  getAdvertisements: fetchUserAdvertisements
+  fetchUserAdvertisements
 };
 
 export default connect(
   mapStateToProps,
   mapActionsToProps
-)(UserAdvertisements);
+)(AdvertisementsContainer);

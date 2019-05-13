@@ -1,6 +1,6 @@
 import Cookies from "universal-cookie";
 
-import { IUserState } from "./contracts";
+import { IUserState } from "../typeScript/contracts/contracts";
 
 export const getAuthorizationHeaders = () => {
   const cookies = new Cookies();

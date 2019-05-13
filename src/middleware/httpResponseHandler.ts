@@ -1,7 +1,7 @@
 import { toast } from "react-toastify";
 
-import { logoutUser } from "../actions/userActions";
-import { IReduxAction } from "./contracts";
+import { logoutUser } from "../actions/user";
+import { IReduxAction } from "../typeScript/contracts/contracts";
 
 const httpResponseHandler = (
   statusCode: number,
@@ -9,10 +9,12 @@ const httpResponseHandler = (
   dispatch: (action: IReduxAction) => void,
   showMessage: boolean = true
 ) => {
+  if (showMessage) {
+    toast(`${statusCode} - ${message}`);
+  }
+
   if (statusCode === 403) {
     logoutUser()(dispatch);
-  } else if (showMessage) {
-    toast(`${statusCode} - ${message}`);
   }
 };
 

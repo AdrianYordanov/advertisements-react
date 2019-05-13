@@ -4,8 +4,8 @@ import { Route, Router } from "react-router-dom";
 import { connect } from "react-redux";
 import { ToastContainer } from "react-toastify";
 
-import PublicAdvertisements from "./components/advertisements/Public/PublicAdvertisements";
-import UserAdvertisements from "./components/advertisements/User/UserAdvertisements";
+import OwnAdvertisementsContainer from "./components/advertisements/own/AdvertisementsContainer";
+import PublicAdvertisementsContainer from "./components/advertisements/public/AdvertisementsContainer";
 import Contacts from "./components/forms/Contacts";
 import Login from "./components/forms/Login";
 import PostAdvertisement from "./components/forms/PostAdvertisement";
@@ -13,8 +13,8 @@ import Register from "./components/forms/Register";
 import Home from "./components/home/Home";
 import Footer from "./components/navigations/Footer";
 import Header from "./components/navigations/Header";
-import history from "./utils/browserHistory";
-import { IReduxState } from "./utils/contracts";
+import history from "./middleware/browserHistory";
+import { IReduxState } from "./typeScript/contracts/contracts";
 
 export interface IProps {
   token?: string;
@@ -26,16 +26,18 @@ class App extends React.Component<IProps> {
       <Router history={history}>
         <React.Fragment>
           <Header />
-          <Route exact={true} path="/" component={Home} />
-          <Route
-            exact={true}
-            path="/advertisements"
-            component={PublicAdvertisements}
-          />
-          <Route path="/contacts" component={Contacts} />
-          {this.getAppropirateRoutes()}
-          <ToastContainer />
+          <main style={{ paddingTop: "20px", paddingBottom: "20px" }}>
+            <Route exact={true} path="/" component={Home} />
+            <Route
+              exact={true}
+              path="/advertisements"
+              component={PublicAdvertisementsContainer}
+            />
+            <Route path="/contacts" component={Contacts} />
+            {this.getAppropirateRoutes()}
+          </main>
           <Footer />
+          <ToastContainer />
         </React.Fragment>
       </Router>
     );
@@ -45,7 +47,10 @@ class App extends React.Component<IProps> {
   private getAppropirateRoutes = () => {
     return this.props.token ? (
       <React.Fragment>
-        <Route path="/advertisements/my" component={UserAdvertisements} />
+        <Route
+          path="/advertisements/my"
+          component={OwnAdvertisementsContainer}
+        />
         <Route path="/advertisements/create" component={PostAdvertisement} />
       </React.Fragment>
     ) : (

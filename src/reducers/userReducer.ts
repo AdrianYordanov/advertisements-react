@@ -1,6 +1,6 @@
 import * as Types from "../actions/types/userTypes";
-import { IReduxAction, IUserState } from "../utils/contracts";
-import { getToken, getUsername } from "../utils/cookies";
+import { getToken, getUsername } from "../middleware/cookies";
+import { IReduxAction, IUserState } from "../typeScript/contracts/contracts";
 
 const initialState: IUserState = {
   token: getToken(),

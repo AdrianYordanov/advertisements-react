@@ -36,17 +36,21 @@ export interface IReduxState {
 
 export interface IReduxAction {
   type: string;
-  payload?: any;
+  payload?: IUserState | IAdvertisement | IAdvertisement[];
 }
 
 export interface ITextFieldConfiguration {
-  fieldType: string;
   value: string;
-  pattern?: RegExp;
+  pattern: RegExp;
   message: string;
 }
 
-export interface ILinkConfig {
+export interface IFileFieldConfiguration {
+  value?: File;
+  message: string;
+}
+
+export interface ILinkConfiguration {
   href: string;
   title: string;
   needAuth?: boolean;

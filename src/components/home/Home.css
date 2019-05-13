@@ -1,4 +1,11 @@
 #coverImg {
-  min-width: 100%;
-  max-width: 100%;
+  width: 100%;
+  height: auto;
+  top: 56px;
+  bottom: 64.8px;
+  position: absolute;
+  background-image: url("./cover.jpg");
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center center;
 }

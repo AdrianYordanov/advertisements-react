@@ -4,9 +4,13 @@ import { NavLink } from "react-router-dom";
 import classNames from "classnames";
 import { connect } from "react-redux";
 
-import { logoutUser } from "../../actions/userActions";
-import history from "../../utils/browserHistory";
-import { ILinkConfig, IReduxState, IUserState } from "../../utils/contracts";
+import { logoutUser } from "../../actions/user";
+import history from "../../middleware/browserHistory";
+import {
+  ILinkConfiguration,
+  IReduxState,
+  IUserState
+} from "../../typeScript/contracts/contracts";
 
 import "./Header.css";
 
@@ -17,7 +21,7 @@ export interface IProps {
 
 export interface IState {
   currentRoute: string;
-  links: ILinkConfig[];
+  links: ILinkConfiguration[];
 }
 
 class Header extends React.Component<IProps, IState> {

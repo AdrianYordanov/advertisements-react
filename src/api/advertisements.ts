@@ -1,6 +1,6 @@
 import axios from "axios";
 
-import { getAuthorizationHeaders } from "../utils/cookies";
+import { getAuthorizationHeaders } from "../middleware/cookies";
 
 export const getPublicAdvertisementsRequest = () => {
   return axios.get("/advertisements");

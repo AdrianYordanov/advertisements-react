@@ -1,8 +1,12 @@
-import * as Api from "../api/userApi";
-import history from "../utils/browserHistory";
-import { IReduxAction, IUser, IUserState } from "../utils/contracts";
-import { removeCookies, setCookies } from "../utils/cookies";
-import httpResponseHandler from "../utils/httpResponseHandler";
+import * as Api from "../api/user";
+import history from "../middleware/browserHistory";
+import { removeCookies, setCookies } from "../middleware/cookies";
+import httpResponseHandler from "../middleware/httpResponseHandler";
+import {
+  IReduxAction,
+  IUser,
+  IUserState
+} from "../typeScript/contracts/contracts";
 import * as Types from "./types/userTypes";
 
 export const registerUser = (inputUser: IUser) => (

@@ -2,80 +2,97 @@ import * as React from "react";
 
 import { connect } from "react-redux";
 
-import { registerUser } from "../../actions/userActions";
-import { ITextFieldConfiguration, IUser } from "../../utils/contracts";
-import TextField from "../fields/TextValidator";
+import { registerUser } from "../../actions/user";
+import { IUser } from "../../typeScript/contracts/contracts";
+import MiniError from "./fields/MiniError";
 
-import "./CommonForm.css";
+import Field from "../../typeScript/classes/Field";
+import TextField from "../../typeScript/classes/TextField";
+
+import "./Form.css";
 
 export interface IProps {
   registerUser: (user: IUser) => void;
 }
 
 export interface IState {
-  usernameConfig: ITextFieldConfiguration;
-  passwordConfig: ITextFieldConfiguration;
-  confirmPasswordConfig: ITextFieldConfiguration;
+  username: TextField;
+  password: TextField;
+  confirmPassword: TextField;
 }
 
 class Register extends React.Component<IProps, IState> {
   constructor(props: IProps) {
     super(props);
     this.state = {
-      usernameConfig: {
-        fieldType: "username",
-        message: "'s length must be at least 5 characters - at least 1 letter.",
-        pattern: /^(?=.*[a-zA-Z])(?=.{5,})/,
-        value: ""
-      },
-      confirmPasswordConfig: {
-        fieldType: "confirm password",
-        message: " must to equal to the password above.",
-        pattern: undefined,
-        value: ""
-      },
-      passwordConfig: {
-        fieldType: "password",
-        message: "'s length must be at least 8 characters - letters and digits",
-        pattern: /^(?=.*[a-zA-Z])(?=.*[0-9])(?=.{8,})/,
-        value: ""
-      }
+      username: new TextField(
+        "",
+        /^(?=.*[a-zA-Z])(?=.{5,})/,
+        "Username's length must be at least 5 characters - at least 1 letter."
+      ),
+      password: new TextField(
+        "",
+        /^(?=.*[a-zA-Z])(?=.*[0-9])(?=.{8,})/,
+        "Password's length must be at least 8 characters - letters and digits"
+      ),
+      confirmPassword: new TextField(
+        "",
+        new RegExp(""),
+        "Confirm password must be equal to the password."
+      )
     };
   }
 
   public render() {
-    const {
-      usernameConfig,
-      passwordConfig,
-      confirmPasswordConfig
-    } = this.state;
+    const { username, password, confirmPassword } = this.state;
+    const fieldsConfig: Field[] = [username, password, confirmPassword];
     return (
       <div className="container login-container">
         <div className="row">
           <div className="col-md-6 login-form-1">
             <h3>Register</h3>
             <form onSubmit={this.submitHandler}>
-              <TextField
-                fieldConfig={usernameConfig}
-                executeValidation={this.validateField}
-                onFieldChange={this.usernameHandler}
-              />
-              <TextField
-                fieldConfig={passwordConfig}
-                executeValidation={this.validateField}
-                onFieldChange={this.passwordHandler}
-              />
-              <TextField
-                fieldConfig={confirmPasswordConfig}
-                executeValidation={this.validateField}
-                onFieldChange={this.confirmPasswordHandler}
-              />
+              <MiniError
+                invalidMessage={username.message}
+                isValid={username.validateField()}
+              >
+                <input
+                  type="text"
+                  placeholder="username"
+                  className="form-control"
+                  onChange={this.usernameHandler}
+                />
+              </MiniError>
+              <MiniError
+                invalidMessage={password.message}
+                isValid={password.validateField()}
+              >
+                <input
+                  type="password"
+                  placeholder="password"
+                  className="form-control"
+                  onChange={this.passwordHandler}
+                />
+              </MiniError>
+              <MiniError
+                invalidMessage={confirmPassword.message}
+                isValid={confirmPassword.validateField()}
+              >
+                <input
+                  type="password"
+                  placeholder="confirm password"
+                  className="form-control"
+                  onChange={this.confirmPasswordHandler}
+                />
+              </MiniError>
               <div className="form-group">
                 <input
                   type="submit"
                   className="btnSubmit"
                   value="Register"
-                  disabled={!this.AllFieldsAreValid()}
+                  disabled={fieldsConfig.some(
+                    fieldConfig => !fieldConfig.validateField()
+                  )}
                 />
               </div>
             </form>
@@ -86,53 +103,32 @@ class Register extends React.Component<IProps, IState> {
   }
 
   // Fields Handlers
-  private usernameHandler = (newValue: string) => {
-    const temp = { ...this.state.usernameConfig };
-    temp.value = newValue;
-    this.setState({ usernameConfig: temp });
+  private usernameHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const { username } = this.state;
+    username.value = event.target.value;
+    this.setState({ username });
   };
-  private passwordHandler = (newValue: string) => {
-    const temp = { ...this.state.passwordConfig };
-    temp.value = newValue;
-    this.setState({ passwordConfig: temp });
+  private passwordHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const { password, confirmPassword } = this.state;
+    password.value = event.target.value;
+    confirmPassword.pattern = new RegExp(event.target.value);
+    this.setState({ password, confirmPassword });
   };
-  private confirmPasswordHandler = (newValue: string) => {
-    const temp = { ...this.state.confirmPasswordConfig };
-    temp.value = newValue;
-    this.setState({ confirmPasswordConfig: temp });
+  private confirmPasswordHandler = (
+    event: React.ChangeEvent<HTMLInputElement>
+  ) => {
+    const { confirmPassword } = this.state;
+    confirmPassword.value = event.target.value;
+    this.setState({ confirmPassword });
   };
   private submitHandler = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
+    const { username, password } = this.state;
     const inputUser: IUser = {
-      password: this.state.passwordConfig.value,
-      username: this.state.usernameConfig.value
+      username: username.value,
+      password: password.value
     };
     this.props.registerUser(inputUser);
-  };
-
-  // Validation
-  private validateField = (
-    inputÇonfiguration: ITextFieldConfiguration,
-    newInputValue: string
-  ) => {
-    const { pattern } = inputÇonfiguration;
-    const passwordValue = this.state.passwordConfig.value;
-    // If field has no pattern, the input field is for confirmation.
-    return pattern
-      ? pattern.test(newInputValue)
-      : newInputValue === passwordValue;
-  };
-  private AllFieldsAreValid = () => {
-    const {
-      usernameConfig,
-      passwordConfig,
-      confirmPasswordConfig
-    } = this.state;
-    return (
-      this.validateField(usernameConfig, usernameConfig.value) &&
-      this.validateField(passwordConfig, passwordConfig.value) &&
-      this.validateField(confirmPasswordConfig, confirmPasswordConfig.value)
-    );
   };
 }
 
