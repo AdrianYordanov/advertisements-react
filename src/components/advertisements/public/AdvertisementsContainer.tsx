@@ -45,8 +45,8 @@ class AdvertisementsContainer extends React.Component<IProps, IState> {
     return (
       <React.Fragment>
         <h1 id="adsCount">{data.length} avaiable advertisements.</h1>
-        <div id="adsPanel" className="col">
-          <div className="col-sm-10">
+        <div className="col">
+          <div className="col-sm-10 fullWidth">
             <div className="row">
               {reducedData.map((advertisement: IAdvertisement) => (
                 <Advertisement
