@@ -4,7 +4,11 @@ import "./Home.css";
 
 class Home extends React.Component {
   public render() {
-    return <div id="coverImg" />;
+    return (
+      <div id="imageContainer">
+        <img src={require('./cover.jpg')}/>
+      </div>
+    )
   }
 }
 

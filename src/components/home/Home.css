@@ -1,11 +1,12 @@
-#coverImg {
-  width: 100%;
-  height: auto;
-  top: 56px;
-  bottom: 64.8px;
-  position: absolute;
-  background-image: url("./cover.jpg");
-  background-size: contain;
-  background-repeat: no-repeat;
-  background-position: center center;
+#imageContainer {
+  display: flex;
+  height: 100%;
+  flex-shrink: unset;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+html, body, main, #root {
+  height: 100%;
 }
