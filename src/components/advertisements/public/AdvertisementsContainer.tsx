@@ -17,6 +17,7 @@ export interface IState {
   firstPage: number;
   maxDataPerPage: number;
   maxPaginationPages: number;
+  isHeaderShown: boolean;
 }
 
 export interface IProps {
@@ -28,6 +29,7 @@ class AdvertisementsContainer extends React.Component<IProps, IState> {
   constructor(props: IProps) {
     super(props);
     this.state = {
+      isHeaderShown: true,
       currentPage: 1,
       firstPage: 1,
       maxDataPerPage: 5,
@@ -42,19 +44,20 @@ class AdvertisementsContainer extends React.Component<IProps, IState> {
   public render() {
     const { data } = this.props;
     const reducedData = this.reduceData();
+    const { isHeaderShown } = this.state;
     return (
       <React.Fragment>
-        <h1 id="adsCount">{data.length} avaiable advertisements.</h1>
-        <div className="col">
-          <div className="col-sm-10 fullWidth">
-            <div className="row">
-              {reducedData.map((advertisement: IAdvertisement) => (
-                <Advertisement
-                  key={advertisement._id}
-                  advertisement={advertisement}
-                />
-              ))}
-            </div>
+        {
+          isHeaderShown &&
+          <h1 id="adsCount" onClick={() => this.setState({isHeaderShown: !isHeaderShown})}>{data.length} avaiable advertisements.</h1>
+        }
+        <div className="container">
+          <div className="row">
+            {reducedData.map((advertisement: IAdvertisement) => (
+              <Advertisement
+                key={advertisement._id}
+                advertisement={advertisement}/>
+            ))}
           </div>
           {this.conditionalPagination(reducedData.length)}
         </div>

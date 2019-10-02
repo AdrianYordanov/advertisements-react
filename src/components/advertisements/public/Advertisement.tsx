@@ -2,8 +2,6 @@ import * as React from "react";
 
 import { IAdvertisement } from "../../../typeScript/contracts/contracts";
 
-import "./Advertisement.css";
-
 export interface IProps {
   advertisement: IAdvertisement;
 }
@@ -11,7 +9,7 @@ export interface IProps {
 const Advertisement = (props: IProps) => {
   const { advertisement } = props;
   return (
-    <div className="col-lg4 col-md-4 mb-4 publicAd">
+    <div className="col-10 col-sm-10 col-md-6 col-lg-4 col-xl-4 mb-4">
       <div className="card h-100">
         <img className="card-img-top" src={advertisement.image} />
         <div className="card-body">
