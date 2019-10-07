@@ -13,6 +13,7 @@ import "./AdvertisementsContainer.css";
 
 export interface IProps {
   data: IAdvertisement[];
+  isLoading: boolean;
   fetchUserAdvertisements: () => void;
 }
 
@@ -22,12 +23,16 @@ class AdvertisementsContainer extends React.Component<IProps, any> {
   };
 
   public render() {
-    const { data } = this.props;
+    const { data, isLoading } = this.props;
     return (
       <React.Fragment>
         <h1 className="userAdvertisementsHeading">
           You have {data.length} advertisements.
         </h1>
+        {
+          isLoading &&
+          <img width={200} height={200} src="/assets/Loader.svg" alt=""/>
+        }
         <table className="userAdvertisementsPanel">
           <tbody>
             {data.map((advertisement: IAdvertisement) => {
@@ -47,10 +52,15 @@ class AdvertisementsContainer extends React.Component<IProps, any> {
 
 // Mapping
 const mapStateToProps = (state: IReduxState) => {
-  return { data: state.advertisements.userAdvertisements };
+  return { 
+    data: state.advertisements.userAdvertisements,
+    isLoading: state.advertisements.loader,
+  };
 };
-const mapActionsToProps = {
-  fetchUserAdvertisements
+const mapActionsToProps = (dispatch: any) => {
+  return {
+    fetchUserAdvertisements: () => dispatch(fetchUserAdvertisements())
+  }
 };
 
 export default connect(

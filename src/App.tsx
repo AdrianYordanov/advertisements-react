@@ -26,7 +26,7 @@ class App extends React.Component<IProps> {
       <Router history={history}>
         <React.Fragment>
           <Header />
-          <main style={{ paddingTop: "56px", paddingBottom: "65px" }}>
+          <main id="root" style={{marginBottom: 65}}>
             <Route exact={true} path="/" component={Home} />
             <Route
               exact={true}

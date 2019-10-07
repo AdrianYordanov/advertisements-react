@@ -22,6 +22,7 @@ export interface IState {
 
 export interface IProps {
   data: IAdvertisement[];
+  isLoading: boolean,
   fetchPublicAdvertisements: () => void;
 }
 
@@ -32,7 +33,7 @@ class AdvertisementsContainer extends React.Component<IProps, IState> {
       isHeaderShown: true,
       currentPage: 1,
       firstPage: 1,
-      maxDataPerPage: 5,
+      maxDataPerPage: 6,
       maxPaginationPages: 10
     };
   }
@@ -46,22 +47,31 @@ class AdvertisementsContainer extends React.Component<IProps, IState> {
     const reducedData = this.reduceData();
     const { isHeaderShown } = this.state;
     return (
-      <React.Fragment>
-        {
-          isHeaderShown &&
-          <h1 id="adsCount" onClick={() => this.setState({isHeaderShown: !isHeaderShown})}>{data.length} avaiable advertisements.</h1>
-        }
+      <div style={{backgroundColor: '#e9ecef'}}>
         <div className="container">
-          <div className="row">
-            {reducedData.map((advertisement: IAdvertisement) => (
-              <Advertisement
-                key={advertisement._id}
-                advertisement={advertisement}/>
-            ))}
-          </div>
-          {this.conditionalPagination(reducedData.length)}
+          <div className='d-flex flex-column justify-content-center align-items-center'>
+            {
+              isHeaderShown &&
+              <h1 id="adsCount" onClick={() => this.setState({isHeaderShown: !isHeaderShown})}>{data.length} avaiable advertisements.</h1>
+            }
+
+            {
+              this.props.isLoading &&
+              <img width={200} height={200} src="/assets/Loader.svg" alt=""/>
+            }
+            </div>
+            <div className="row">
+              {reducedData.map((advertisement: IAdvertisement) => (
+                <Advertisement
+                  key={advertisement._id}
+                  advertisement={advertisement}/>
+              ))}
+            </div>
+            <div className="row justify-content-center">
+              {this.conditionalPagination(reducedData.length)}
+            </div>
         </div>
-      </React.Fragment>
+      </div>
     );
   }
 
@@ -104,13 +114,18 @@ class AdvertisementsContainer extends React.Component<IProps, IState> {
 
 // Mapping
 const mapStateToProps = (state: IReduxState) => {
-  return { data: state.advertisements.publicAdvertisements };
+  return { 
+    data: state.advertisements.publicAdvertisements,
+    isLoading: state.advertisements.loader
+  };
 };
-const mapActionsToProps = {
-  fetchPublicAdvertisements
-};
+const mapDispatchTopProps = (dispatch: any) => {
+  return {
+    fetchPublicAdvertisements: () => dispatch(fetchPublicAdvertisements())
+  }
+}
 
 export default connect(
   mapStateToProps,
-  mapActionsToProps
+  mapDispatchTopProps
 )(AdvertisementsContainer);

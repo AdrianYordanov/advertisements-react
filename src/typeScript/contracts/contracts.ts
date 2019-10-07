@@ -21,6 +21,7 @@ export interface IAdvertisementsState {
   publicAdvertisements: IAdvertisement[];
   userAdvertisements: IAdvertisement[];
   lastCreated?: IAdvertisement;
+  loader: boolean;
 }
 
 export interface IRouteHistoryState {

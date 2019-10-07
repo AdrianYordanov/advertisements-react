@@ -7,14 +7,23 @@ import {
 
 const initialState: IAdvertisementsState = {
   publicAdvertisements: [],
-  userAdvertisements: []
+  userAdvertisements: [],
+  loader: false, 
 };
 
 const advertisementsReducer = (state = initialState, action: IReduxAction) => {
   switch (action.type) {
+    case Types.LOADING_ADVERTISEMENTS: {
+      state = {
+        ...state,
+        loader: true,
+      };
+      break;
+    }
     case Types.FETCH_PUBLIC_ADVERTISEMENTS: {
       state = {
         ...state,
+        loader: false,
         publicAdvertisements: action.payload as IAdvertisement[]
       };
       break;
@@ -22,14 +31,8 @@ const advertisementsReducer = (state = initialState, action: IReduxAction) => {
     case Types.FETCH_USER_ADVERTISEMENTS: {
       state = {
         ...state,
+        loader: false,
         userAdvertisements: action.payload as IAdvertisement[]
-      };
-      break;
-    }
-    case Types.SET_LAST_CREATED_ADVERTISEMENT: {
-      state = {
-        ...state,
-        lastCreated: action.payload as IAdvertisement
       };
       break;
     }

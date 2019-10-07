@@ -1,15 +1,15 @@
 import * as Api from "../api/advertisements";
 import history from "../middleware/browserHistory";
 import httpResponseHandler from "../middleware/httpResponseHandler";
-import {
-  IAdvertisement,
-  IReduxAction
-} from "../typeScript/contracts/contracts";
+import {IAdvertisement } from "../typeScript/contracts/contracts";
 import * as Types from "./types/advertisementsTypes";
 
-export const fetchPublicAdvertisements = () => (
-  dispatch: (action: IReduxAction) => void
-) => {
+export const loadingAdvertisements = ()  => {
+  return {type: Types.LOADING_ADVERTISEMENTS};
+}
+
+export const fetchPublicAdvertisements = () => (dispatch: any) => {
+  dispatch(loadingAdvertisements());
   Api.getPublicAdvertisementsRequest()
     .then(res => {
       dispatch({
@@ -22,11 +22,10 @@ export const fetchPublicAdvertisements = () => (
       const { status, data } = err.response;
       httpResponseHandler(status, data.message, dispatch);
     });
-};
+}
 
-export const fetchUserAdvertisements = () => (
-  dispatch: (action: IReduxAction) => void
-) => {
+export const fetchUserAdvertisements = () => (dispatch: any) => {
+  dispatch(loadingAdvertisements());
   Api.getUserAdvertisementsRequest()
     .then(res => {
       dispatch({
@@ -41,15 +40,9 @@ export const fetchUserAdvertisements = () => (
     });
 };
 
-export const postAdvertisement = (advertisement: FormData) => (
-  dispatch: (action: IReduxAction) => void
-) => {
+export const postAdvertisement = (advertisement: FormData) => (dispatch: any) => {
   Api.postAdvertisementRequest(advertisement)
     .then(res => {
-      dispatch({
-        payload: res.data.advertisement as IAdvertisement,
-        type: Types.SET_LAST_CREATED_ADVERTISEMENT
-      });
       httpResponseHandler(res.status, res.data.message, dispatch);
       history.push("/advertisements/my");
     })
@@ -59,9 +52,7 @@ export const postAdvertisement = (advertisement: FormData) => (
     });
 };
 
-export const deleteAdvertisement = (id: string) => (
-  dispatch: (action: IReduxAction) => void
-) => {
+export const deleteAdvertisement = (id: string) => (dispatch: any) => {
   Api.deleteAdvertisementRequest(id)
     .then(res => {
       httpResponseHandler(res.status, res.data.message, dispatch);
