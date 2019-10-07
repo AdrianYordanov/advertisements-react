@@ -44,11 +44,13 @@ const Advertisement = (props: IProps) => {
 };
 
 // Mapping
-const mapActionsToProps = {
-  deleteAdvertisement
+const mapDispatchToProps = (dispatch: any) => {
+  return {
+    deleteAdvertisement: (id: string) => dispatch(deleteAdvertisement(id))
+  };
 };
 
 export default connect(
   undefined,
-  mapActionsToProps
+  mapDispatchToProps
 )(Advertisement);

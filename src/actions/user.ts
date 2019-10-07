@@ -4,12 +4,12 @@ import { removeCookies, setCookies } from "../middleware/cookies";
 import httpResponseHandler from "../middleware/httpResponseHandler";
 import {
   IReduxAction,
-  IUser,
+  IUserForm,
   IUserState
 } from "../typeScript/contracts/contracts";
 import * as Types from "./types/userTypes";
 
-export const registerUser = (inputUser: IUser) => (
+export const registerUser = (inputUser: IUserForm) => (
   dispatch: (action: IReduxAction) => void
 ) => {
   Api.registerRequest(inputUser)
@@ -20,7 +20,7 @@ export const registerUser = (inputUser: IUser) => (
     });
 };
 
-export const loginUser = (inputUser: IUser) => (
+export const loginUser = (inputUser: IUserForm) => (
   dispatch: (action: IReduxAction) => void
 ) => {
   Api.loginRequest(inputUser)
@@ -31,12 +31,12 @@ export const loginUser = (inputUser: IUser) => (
     });
 };
 
-export const logoutUser = () => (dispatch: (action: IReduxAction) => void) => {
+export const logoutUser = () => {
   removeCookies();
   history.push("/");
-  dispatch({
+  return {
     type: Types.LOGOUT_USER
-  });
+  };
 };
 
 // Handlers

@@ -29,10 +29,9 @@ class AdvertisementsContainer extends React.Component<IProps, any> {
         <h1 className="userAdvertisementsHeading">
           You have {data.length} advertisements.
         </h1>
-        {
-          isLoading &&
-          <img width={200} height={200} src="/assets/Loader.svg" alt=""/>
-        }
+        {isLoading && (
+          <img width={200} height={200} src="/assets/Loader.svg" alt="" />
+        )}
         <table className="userAdvertisementsPanel">
           <tbody>
             {data.map((advertisement: IAdvertisement) => {
@@ -52,18 +51,18 @@ class AdvertisementsContainer extends React.Component<IProps, any> {
 
 // Mapping
 const mapStateToProps = (state: IReduxState) => {
-  return { 
+  return {
     data: state.advertisements.userAdvertisements,
-    isLoading: state.advertisements.loader,
+    isLoading: state.advertisements.loader
   };
 };
-const mapActionsToProps = (dispatch: any) => {
+const mapDispatchToProps = (dispatch: any) => {
   return {
     fetchUserAdvertisements: () => dispatch(fetchUserAdvertisements())
-  }
+  };
 };
 
 export default connect(
   mapStateToProps,
-  mapActionsToProps
+  mapDispatchToProps
 )(AdvertisementsContainer);

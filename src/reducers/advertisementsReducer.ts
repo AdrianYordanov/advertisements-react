@@ -8,7 +8,7 @@ import {
 const initialState: IAdvertisementsState = {
   publicAdvertisements: [],
   userAdvertisements: [],
-  loader: false, 
+  loader: false,
 };
 
 const advertisementsReducer = (state = initialState, action: IReduxAction) => {

@@ -1,11 +1,11 @@
 import axios from "axios";
 
-import { IUser } from "../typeScript/contracts/contracts";
+import { IUserForm } from "../typeScript/contracts/contracts";
 
-export const loginRequest = (user: IUser) => {
+export const loginRequest = (user: IUserForm) => {
   return axios.post("users/login", user);
 };
 
-export const registerRequest = (user: IUser) => {
+export const registerRequest = (user: IUserForm) => {
   return axios.post("users/register", user);
 };

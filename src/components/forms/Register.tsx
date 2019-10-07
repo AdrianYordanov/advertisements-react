@@ -3,7 +3,7 @@ import * as React from "react";
 import { connect } from "react-redux";
 
 import { registerUser } from "../../actions/user";
-import { IUser } from "../../typeScript/contracts/contracts";
+import { IUserForm } from "../../typeScript/contracts/contracts";
 import MiniError from "./fields/MiniError";
 
 import Field from "../../typeScript/classes/Field";
@@ -12,7 +12,7 @@ import TextField from "../../typeScript/classes/TextField";
 import "./Form.css";
 
 export interface IProps {
-  registerUser: (user: IUser) => void;
+  registerUser: (user: IUserForm) => void;
 }
 
 export interface IState {
@@ -124,20 +124,22 @@ class Register extends React.Component<IProps, IState> {
   private submitHandler = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const { username, password } = this.state;
-    const inputUser: IUser = {
+    const user: IUserForm = {
       username: username.value,
       password: password.value
     };
-    this.props.registerUser(inputUser);
+    this.props.registerUser(user);
   };
 }
 
 // Mapping
-const mapActionsToProps = {
-  registerUser
+const mapDispatchToProps = (dispatch: any) => {
+  return {
+    registerUser: (user: IUserForm) => dispatch(registerUser(user))
+  };
 };
 
 export default connect(
   undefined,
-  mapActionsToProps
+  mapDispatchToProps
 )(Register);

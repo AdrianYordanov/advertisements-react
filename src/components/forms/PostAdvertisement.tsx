@@ -153,11 +153,14 @@ class PostAdvertisement extends React.Component<IProps, IState> {
 }
 
 // Mapping
-const mapActionsToProps = {
-  postAdvertisement
+const mapDispatchToProps = (dispatch: any) => {
+  return {
+    postAdvertisement: (formData: FormData) =>
+      dispatch(postAdvertisement(formData))
+  };
 };
 
 export default connect(
   undefined,
-  mapActionsToProps
+  mapDispatchToProps
 )(PostAdvertisement);

@@ -52,7 +52,10 @@ class Header extends React.Component<IProps, IState> {
     const welcomeMessage = "Welcome" + (user.token ? `, ${user.username}` : "");
     const welcolmeLink = "/advertisements" + (user.token ? "/my" : "");
     return (
-      <nav id="navigation" className="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
+      <nav
+        id="navigation"
+        className="navbar navbar-expand-lg navbar-dark bg-dark fixed-top"
+      >
         <div className="container">
           <NavLink to={welcolmeLink} className="navbar-brand">
             {welcomeMessage}
@@ -82,7 +85,7 @@ class Header extends React.Component<IProps, IState> {
                     key={index}
                     to={link.href}
                     className={classNames("nav-link", {
-                      'active-nav-link': this.checkLinkIsActive(link.href)
+                      "active-nav-link": this.checkLinkIsActive(link.href)
                     })}
                   >
                     {link.title}
@@ -117,9 +120,13 @@ const mapStateToProps = (state: IReduxState) => {
   const { username, token } = state.user;
   return { user: { username, token } };
 };
-const mapActionsToProps = { logoutUser };
+const mapDispatchToProps = (dispatch: any) => {
+  return {
+    logoutUser: () => dispatch(logoutUser())
+  };
+};
 
 export default connect(
   mapStateToProps,
-  mapActionsToProps
+  mapDispatchToProps
 )(Header);

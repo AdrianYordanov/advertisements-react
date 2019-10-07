@@ -1,11 +1,11 @@
 import * as Api from "../api/advertisements";
 import history from "../middleware/browserHistory";
 import httpResponseHandler from "../middleware/httpResponseHandler";
-import {IAdvertisement } from "../typeScript/contracts/contracts";
+import { IAdvertisement } from "../typeScript/contracts/contracts";
 import * as Types from "./types/advertisementsTypes";
 
-export const loadingAdvertisements = ()  => {
-  return {type: Types.LOADING_ADVERTISEMENTS};
+export const loadingAdvertisements = () => {
+  return { type: Types.LOADING_ADVERTISEMENTS };
 }
 
 export const fetchPublicAdvertisements = () => (dispatch: any) => {
@@ -53,11 +53,10 @@ export const postAdvertisement = (advertisement: FormData) => (dispatch: any) =>
 };
 
 export const deleteAdvertisement = (id: string) => (dispatch: any) => {
-  Api.deleteAdvertisementRequest(id)
-    .then(res => {
-      httpResponseHandler(res.status, res.data.message, dispatch);
-      fetchUserAdvertisements()(dispatch);
-    })
+  Api.deleteAdvertisementRequest(id).then(res => {
+    httpResponseHandler(res.status, res.data.message, dispatch);
+    fetchUserAdvertisements()(dispatch);
+  })
     .catch(err => {
       const { status, data } = err.response;
       httpResponseHandler(status, data.message, dispatch);

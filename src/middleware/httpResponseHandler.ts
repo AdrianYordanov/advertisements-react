@@ -14,7 +14,7 @@ const httpResponseHandler = (
   }
 
   if (statusCode === 403) {
-    logoutUser()(dispatch);
+    dispatch(logoutUser());
   }
 };
 
