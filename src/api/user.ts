@@ -1,6 +1,6 @@
 import axios from "axios";
 
-import { IUserForm } from "../typeScript/contracts/contracts";
+import { IUserForm } from "src/typeScript/contracts";
 
 export const loginRequest = (user: IUserForm) => {
   return axios.post("users/login", user);

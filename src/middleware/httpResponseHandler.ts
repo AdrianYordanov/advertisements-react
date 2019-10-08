@@ -1,7 +1,7 @@
 import { toast } from "react-toastify";
 
-import { logoutUser } from "../actions/user";
-import { IReduxAction } from "../typeScript/contracts/contracts";
+import { logoutUser } from "src/redux/user/actions";
+import { IReduxAction } from "../typeScript/contracts";
 
 const httpResponseHandler = (
   statusCode: number,

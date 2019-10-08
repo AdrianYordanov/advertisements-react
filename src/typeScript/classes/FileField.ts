@@ -1,13 +1,11 @@
 import Field from "./Field";
 
 export default class FileField extends Field {
-  public value: File;
-
-  constructor(message: string) {
+  constructor(message: string, public value?: File) {
     super(message);
   }
 
   public validateField = () => {
-    return typeof this.value !== "undefined";
+    return this.value === undefined;
   };
 }

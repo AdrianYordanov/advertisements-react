@@ -1,13 +1,12 @@
 import Field from "./Field";
 
 export default class TextField extends Field {
-  public value: string;
-  public pattern: RegExp;
-
-  constructor(value: string, pattern: RegExp, message: string) {
+  constructor(
+    message: string,
+    public pattern: RegExp,
+    public value: string = ""
+  ) {
     super(message);
-    this.value = value;
-    this.pattern = pattern;
   }
 
   public validateField = () => {

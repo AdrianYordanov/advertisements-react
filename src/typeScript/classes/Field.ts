@@ -1,9 +1,5 @@
 export default abstract class Field {
-  public message: string;
-
-  constructor(message: string) {
-    this.message = message;
-  }
+  constructor(public message: string) {}
 
   public abstract validateField(): boolean;
 }

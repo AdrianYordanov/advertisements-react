@@ -1,20 +1,22 @@
 import * as React from "react";
 import { Route, Router } from "react-router-dom";
-
 import { connect } from "react-redux";
 import { ToastContainer } from "react-toastify";
 
-import OwnAdvertisementsContainer from "./components/advertisements/own/AdvertisementsContainer";
-import PublicAdvertisementsContainer from "./components/advertisements/public/AdvertisementsContainer";
-import Contacts from "./components/forms/Contacts";
-import Login from "./components/forms/Login";
-import PostAdvertisement from "./components/forms/PostAdvertisement";
-import Register from "./components/forms/Register";
-import Home from "./components/home/Home";
-import Footer from "./components/navigations/Footer";
-import Header from "./components/navigations/Header";
+// Sidebar
+import NavigationBar from "./components/NavigationBar/NavigationBar";
+import Footer from "./components/Footer/Footer";
+// Pages
+import Home from "./pages/Home/Home";
+import Contacts from "./pages/Contacts/Contacts";
+import Login from "./pages/Login/Login";
+import Register from "./pages/Register/Register";
+import MyAdvertisements from "./pages/MyAdvertisements/MyAdvertisements";
+import AllAdvertisements from "./pages/AllAdvertisements/AllAdvertisements";
+import CreateAdvertisement from "./pages/CreateAdvertisement/CreateAdvertisement";
+
 import history from "./middleware/browserHistory";
-import { IReduxState } from "./typeScript/contracts/contracts";
+import { IAppState } from "./typeScript/contracts";
 
 export interface IProps {
   token?: string;
@@ -25,13 +27,13 @@ class App extends React.Component<IProps> {
     return (
       <Router history={history}>
         <React.Fragment>
-          <Header />
-          <main id="root" style={{marginBottom: 65}}>
+          <NavigationBar />
+          <main id="root" style={{ marginBottom: 65 }}>
             <Route exact={true} path="/" component={Home} />
             <Route
               exact={true}
               path="/advertisements"
-              component={PublicAdvertisementsContainer}
+              component={AllAdvertisements}
             />
             <Route path="/contacts" component={Contacts} />
             {this.getAppropirateRoutes()}
@@ -47,11 +49,8 @@ class App extends React.Component<IProps> {
   private getAppropirateRoutes = () => {
     return this.props.token ? (
       <React.Fragment>
-        <Route
-          path="/advertisements/my"
-          component={OwnAdvertisementsContainer}
-        />
-        <Route path="/advertisements/create" component={PostAdvertisement} />
+        <Route path="/advertisements/my" component={MyAdvertisements} />
+        <Route path="/advertisements/create" component={CreateAdvertisement} />
       </React.Fragment>
     ) : (
       <React.Fragment>
@@ -63,7 +62,7 @@ class App extends React.Component<IProps> {
 }
 
 // Mapping
-const mapStateToProps = (state: IReduxState) => {
+const mapStateToProps = (state: IAppState) => {
   return { token: state.user.token };
 };
 

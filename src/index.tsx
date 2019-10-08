@@ -14,7 +14,7 @@ import "react-toastify/dist/ReactToastify.css";
 import { Provider } from "react-redux";
 
 // Store
-import store from "./store";
+import store from "./redux/store";
 
 ReactDOM.render(
   <Provider store={store}>

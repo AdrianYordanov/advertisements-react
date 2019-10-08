@@ -1,0 +1,18 @@
+.advertisements-count {
+  position: relative;
+  margin-top: 1rem;
+  margin-bottom: 1rem;
+  width: 100%;
+  border-radius: 20px;
+  padding: 40px;
+  background-color: #343a40;
+  color: #ffffff;
+  text-align: center;
+  font-weight: 200;
+}
+
+@media (max-width: 767.98px) {
+  .row {
+    justify-content: center;
+  }
+}
